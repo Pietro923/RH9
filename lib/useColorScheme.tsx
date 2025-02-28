@@ -8,6 +8,8 @@ import { COLORS } from '~/theme/colors';
 function useColorScheme() {
   const { colorScheme, setColorScheme: setNativeWindColorScheme } = useNativewindColorScheme();
 
+  console.log('Color Scheme detected:', colorScheme); // <-- Agrega esto aquí
+
   async function setColorScheme(colorScheme: 'light' | 'dark') {
     setNativeWindColorScheme(colorScheme);
     if (Platform.OS !== 'android') return;
