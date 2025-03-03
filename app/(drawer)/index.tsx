@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 import { Text } from '~/components/nativewindui/Text';
-import { Container } from '~/components/Container';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
@@ -58,7 +57,7 @@ export default function Home() {
               className="mr-4"
             >
               <View className="relative">
-                <Ionicons name="notifications-outline" size={24} color="#333" />
+                <Ionicons name="notifications-outline" className='dark:text-gray-100' size={24} color="#333" />
                 {notifications > 0 && (
                   <View className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500">
                     <Text className="text-xs text-white">{notifications}</Text>
@@ -86,15 +85,15 @@ export default function Home() {
         
         {/* Acciones rápidas */}
         <View className="px-5 py-6">
-          <Text variant="title3" className="mb-4">
+          <Text variant="title3" className="mb-4 dark:text-gray-100">
             Acciones rápidas
           </Text>
           
-          <View className="flex-row flex-wrap justify-between">
+          <View className="flex-row flex-wrap justify-between dark:text-gray-100">
             {quickActions.map(action => (
               <TouchableOpacity
                 key={action.id}
-                className="mb-4 w-[48%] items-center rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800"
+                className="mb-4 w-[48%] items-center rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-gray-100"
                 onPress={() => router.push(action.route)}
               >
                 <Ionicons name={action.icon} size={28} color="#3366CC" className="mb-2" />
@@ -106,22 +105,22 @@ export default function Home() {
         
         {/* Resumen */}
         <View className="mx-5 mb-6 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
-          <Text variant="title3" className="mb-4">Resumen</Text>
+          <Text variant="title3" className="mb-4 dark:text-gray-100">Resumen</Text>
           
           <View className="flex-row justify-between">
             <View className="flex-1 items-center">
               <Text variant="title2" className="text-blue-600">12</Text>
-              <Text className="text-center text-xs">Días de vacaciones</Text>
+              <Text className="text-center text-xs dark:text-gray-100">Días de vacaciones</Text>
             </View>
             
             <View className="flex-1 items-center">
               <Text variant="title2" className="text-blue-600">3</Text>
-              <Text className="text-center text-xs">Cursos en progreso</Text>
+              <Text className="text-center text-xs dark:text-gray-100">Cursos en progreso</Text>
             </View>
             
             <View className="flex-1 items-center">
               <Text variant="title2" className="text-blue-600">2</Text>
-              <Text className="text-center text-xs">Tareas pendientes</Text>
+              <Text className="text-center text-xs dark:text-gray-100">Tareas pendientes</Text>
             </View>
           </View>
         </View>
@@ -129,7 +128,7 @@ export default function Home() {
         {/* Noticias */}
         <View className="px-5 pb-8">
           <View className="mb-4 flex-row justify-between items-center">
-            <Text variant="title3">Noticias</Text>
+            <Text variant="title3" className='dark:text-gray-100'>Noticias</Text>
             <TouchableOpacity onPress={() => router.push('/noticias')}>
               <Text className="text-blue-600">Ver todas</Text>
             </TouchableOpacity>
@@ -138,7 +137,7 @@ export default function Home() {
           {newsItems.map(item => (
             <TouchableOpacity
               key={item.id}
-              className="mb-4 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800"
+              className="mb-4 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800 dark:text-gray-100"
             >
               <Text variant="subhead" className="mb-1 font-medium">
                 {item.title}

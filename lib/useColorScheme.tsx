@@ -2,26 +2,49 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { useColorScheme as useNativewindColorScheme } from 'nativewind';
 import * as React from 'react';
 import { Platform } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '~/theme/colors';
 
+const COLOR_SCHEME_STORAGE_KEY = 'app_color_scheme';
+
 function useColorScheme() {
-  const { colorScheme, setColorScheme: setNativeWindColorScheme } = useNativewindColorScheme();
+  const { colorScheme, setColorScheme: setNativeWindColorScheme, toggleColorScheme: toggleNativeWindColorScheme } = useNativewindColorScheme();
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
-  console.log('Color Scheme detected:', colorScheme); // <-- Agrega esto aquí
+  // Cargar el tema guardado
+  React.useEffect(() => {
+    async function loadSavedColorScheme() {
+      try {
+        const savedColorScheme = await AsyncStorage.getItem(COLOR_SCHEME_STORAGE_KEY);
+        if (savedColorScheme === 'light' || savedColorScheme === 'dark') {
+          setNativeWindColorScheme(savedColorScheme);
+        }
+      } catch (error) {
+        console.error('Error loading saved color scheme:', error);
+      } finally {
+        setIsLoaded(true);
+      }
+    }
+    loadSavedColorScheme();
+  }, []);
 
-  async function setColorScheme(colorScheme: 'light' | 'dark') {
-    setNativeWindColorScheme(colorScheme);
-    if (Platform.OS !== 'android') return;
+  async function setColorScheme(newColorScheme: 'light' | 'dark') {
     try {
-      await setNavigationBar(colorScheme);
+      setNativeWindColorScheme(newColorScheme);
+      
+      // Guardar la preferencia del usuario
+      await AsyncStorage.setItem(COLOR_SCHEME_STORAGE_KEY, newColorScheme);
+      
+      if (Platform.OS !== 'android') return;
+      await setNavigationBar(newColorScheme);
     } catch (error) {
-      console.error('useColorScheme.tsx", "setColorScheme', error);
+      console.error('Error in setColorScheme:', error);
     }
   }
 
   function toggleColorScheme() {
-    return setColorScheme(colorScheme === 'light' ? 'dark' : 'light');
+    const newScheme = colorScheme === 'light' ? 'dark' : 'light';
+    return setColorScheme(newScheme);
   }
 
   return {
@@ -30,6 +53,7 @@ function useColorScheme() {
     setColorScheme,
     toggleColorScheme,
     colors: COLORS[colorScheme ?? 'light'],
+    isLoaded,
   };
 }
 
@@ -37,16 +61,16 @@ function useColorScheme() {
  * Set the Android navigation bar color based on the color scheme.
  */
 function useInitialAndroidBarSync() {
-  const { colorScheme } = useColorScheme();
+  const { colorScheme, isLoaded } = useColorScheme();
+  
   React.useEffect(() => {
-    if (Platform.OS !== 'android') return;
+    if (Platform.OS !== 'android' || !isLoaded) return;
+    
     setNavigationBar(colorScheme).catch((error) => {
       console.error('useColorScheme.tsx", "useInitialColorScheme', error);
     });
-  }, []);
+  }, [colorScheme, isLoaded]);
 }
-
-export { useColorScheme, useInitialAndroidBarSync };
 
 function setNavigationBar(colorScheme: 'light' | 'dark') {
   return Promise.all([
@@ -55,3 +79,5 @@ function setNavigationBar(colorScheme: 'light' | 'dark') {
     NavigationBar.setBackgroundColorAsync(colorScheme === 'dark' ? '#00000030' : '#ffffff80'),
   ]);
 }
+
+export { useColorScheme, useInitialAndroidBarSync };

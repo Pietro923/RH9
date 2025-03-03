@@ -81,9 +81,9 @@ export default function NominaScreen() {
         
         {/* Resumen de nómina */}
         <View className="mx-5 mt-6 mb-6 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
-          <Text variant="title3" className="mb-4">Resumen</Text>
+          <Text variant="title3" className="mb-4 dark:text-gray-100">Resumen</Text>
           
-          <View className="flex-row justify-between">
+          <View className="flex-row justify-between dark:text-gray-100">
             <View className="flex-1 items-center">
               <Text variant="title2" className="text-blue-600">${nominaResumen.ultimoSueldo}</Text>
               <Text className="text-center text-xs">Último sueldo</Text>
@@ -102,7 +102,7 @@ export default function NominaScreen() {
         </View>
         
         {/* Historial de nómina */}
-        <View className="px-5 pb-8">
+        <View className="px-5 pb-8 dark:text-gray-100">
           <Text variant="title3" className="mb-4">Historial de nómina</Text>
           
           {nominaData.map(nomina => (
@@ -134,21 +134,21 @@ export default function NominaScreen() {
               {expandedItem === nomina.id && (
                 <View className="mt-1 rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
                   <View className="flex-row justify-between mb-4">
-                    <Text className="text-gray-500">Fecha de pago:</Text>
+                    <Text className="text-gray-500 dark:text-gray-200">Fecha de pago:</Text>
                     <Text className="font-medium text-gray-700 dark:text-gray-300">{nomina.fechaPago}</Text>
                   </View>
                   
                   <View className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
                     <View className="flex-row justify-between mb-2">
-                      <Text className="text-gray-500">Sueldo Bruto:</Text>
+                      <Text className="text-gray-500dark:text-gray-300">Sueldo Bruto:</Text>
                       <Text className="font-medium text-gray-700 dark:text-gray-300">${nomina.sueldoBruto.toFixed(2)}</Text>
                     </View>
                     <View className="flex-row justify-between mb-2">
-                      <Text className="text-gray-500">Deducciones:</Text>
+                      <Text className="text-gray-500 dark:text-gray-300">Deducciones:</Text>
                       <Text className="font-medium text-gray-700 dark:text-gray-300">-${nomina.deducciones.toFixed(2)}</Text>
                     </View>
                     <View className="flex-row justify-between">
-                      <Text className="font-medium">Sueldo Neto:</Text>
+                      <Text className="font-medium dark:text-gray-300">Sueldo Neto:</Text>
                       <Text className="font-bold text-blue-600">${nomina.sueldoNeto.toFixed(2)}</Text>
                     </View>
                   </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Switch, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
@@ -6,16 +6,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useColorScheme } from '~/lib/useColorScheme';
 
 export default function Personalizacion() {
-  const [theme, setTheme] = useState('light');
-  const { isDarkColorScheme } = useColorScheme();
+  const { colorScheme, isDarkColorScheme, setColorScheme } = useColorScheme();
+  
   const [settings, setSettings] = useState({
     notificaciones: true,
     sonidos: true,
     mostrarEstado: true,
-    modoOscuro: isDarkColorScheme, // Inicializar según el tema actual
     idiomaEspanol: true,
     fuente: 'Predeterminado',
-    tamanioFuente: 'Mediano'
+    tamanioFuente: 'medium'
   });
 
   // Colores según el tema
@@ -29,6 +28,12 @@ export default function Personalizacion() {
   const activeTextColor = isDarkColorScheme ? 'text-blue-400' : 'text-blue-600';
 
   const toggleSetting = (key) => {
+    if (key === 'modoOscuro') {
+      const newTheme = isDarkColorScheme ? 'light' : 'dark';
+      setColorScheme(newTheme);
+      return;
+    }
+    
     setSettings(prev => ({
       ...prev,
       [key]: !prev[key]
@@ -48,6 +53,9 @@ export default function Personalizacion() {
     { id: 'medium', name: 'Mediano' },
     { id: 'large', name: 'Grande' }
   ];
+
+  // Definir un tema seleccionado (sería obtenido de un contexto global en una implementación completa)
+  const [selectedTheme, setSelectedTheme] = useState('blue');
 
   return (
     <>
@@ -72,13 +80,13 @@ export default function Personalizacion() {
                   <TouchableOpacity 
                     key={item.id}
                     className="mr-4 mb-4 items-center"
-                    onPress={() => console.log(`Tema seleccionado: ${item.id}`)}
+                    onPress={() => setSelectedTheme(item.id)}
                   >
                     <View 
                       style={{ backgroundColor: item.color }} 
                       className="w-16 h-16 rounded-full items-center justify-center mb-2"
                     >
-                      {theme === item.id && (
+                      {selectedTheme === item.id && (
                         <FontAwesome name="check" size={24} color="white" />
                       )}
                     </View>
@@ -88,13 +96,13 @@ export default function Personalizacion() {
               </View>
             </View>
             
-            {/* Modo oscuro */}
+            {/* Modo oscuro - Ahora utiliza directamente el estado del hook mejorado */}
             <View className={`${sectionBgColor} rounded-xl overflow-hidden`}>
               <SettingToggle 
                 icon="moon-o"
                 title="Modo oscuro"
                 description="Tema con fondos oscuros para uso nocturno"
-                isEnabled={settings.modoOscuro}
+                isEnabled={isDarkColorScheme}
                 onToggle={() => toggleSetting('modoOscuro')}
                 isDarkMode={isDarkColorScheme}
               />
@@ -133,7 +141,7 @@ export default function Personalizacion() {
               </View>
             </View>
             
-            {/* Idioma */}
+            {/* Resto de configuraciones igual que en tu código original */}
             <View className={`${sectionBgColor} rounded-xl overflow-hidden`}>
               <SettingToggle 
                 icon="language"
@@ -145,7 +153,6 @@ export default function Personalizacion() {
               />
             </View>
             
-            {/* Notificaciones */}
             <View>
               <Text className={`text-lg font-bold mb-4 ${textColor}`}>Notificaciones</Text>
               <View className={`${sectionBgColor} rounded-xl overflow-hidden`}>
@@ -169,7 +176,6 @@ export default function Personalizacion() {
               </View>
             </View>
             
-            {/* Privacidad */}
             <View className={`${sectionBgColor} rounded-xl overflow-hidden`}>
               <SettingToggle 
                 icon="eye"
@@ -181,10 +187,20 @@ export default function Personalizacion() {
               />
             </View>
             
-            {/* Botón de restablecer */}
             <TouchableOpacity 
               className={`${buttonBgColor} p-4 rounded-xl items-center mt-4`}
-              onPress={() => console.log('Restablecer configuración')}
+              onPress={() => {
+                setColorScheme('light');
+                setSettings({
+                  notificaciones: true,
+                  sonidos: true,
+                  mostrarEstado: true,
+                  idiomaEspanol: true,
+                  fuente: 'Predeterminado',
+                  tamanioFuente: 'medium'
+                });
+                setSelectedTheme('blue');
+              }}
             >
               <Text className={isDarkColorScheme ? 'text-gray-300 font-medium' : 'text-gray-700 font-medium'}>Restablecer configuración</Text>
             </TouchableOpacity>
@@ -195,12 +211,11 @@ export default function Personalizacion() {
   );
 }
 
-// Componente para configuraciones con toggle
+// Componentes SettingToggle y SettingOption se mantienen igual que en tu código original
 const SettingToggle = ({ icon, title, description, isEnabled, onToggle, isDarkMode }) => {
   const textColor = isDarkMode ? 'text-white' : 'text-gray-800';
   const textMutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
   const iconColor = isDarkMode ? '#a1a1aa' : '#6b7280';
-
   return (
     <View className="flex-row items-center justify-between p-4">
       <View className="flex-row items-center flex-1">
@@ -220,13 +235,11 @@ const SettingToggle = ({ icon, title, description, isEnabled, onToggle, isDarkMo
   );
 };
 
-// Componente para opciones de configuración
 const SettingOption = ({ icon, title, value, onPress, isDarkMode }) => {
   const textColor = isDarkMode ? 'text-white' : 'text-gray-800';
   const textMutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
   const iconColor = isDarkMode ? '#a1a1aa' : '#6b7280';
   const chevronColor = isDarkMode ? '#6b7280' : '#9ca3af';
-
   return (
     <TouchableOpacity className="flex-row items-center justify-between p-4" onPress={onPress}>
       <View className="flex-row items-center">

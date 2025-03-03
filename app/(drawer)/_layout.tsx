@@ -7,6 +7,8 @@ import { HeaderButton } from '../../components/HeaderButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
+import { useColorScheme } from 'nativewind';
+
 // Color principal de la app
 const THEME_COLOR = '#0056b3';
 
@@ -14,6 +16,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const insets = useSafeAreaInsets();
   const segments = useSegments();
   const currentRoute = segments.join('/');
+  const { colorScheme } = useColorScheme();
 
   return (
     <DrawerContentScrollView 
@@ -21,32 +24,33 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       contentContainerStyle={{ 
         paddingTop: 0,
       }}
+      className={`bg-white dark:bg-gray-900`}
     >
       {/* Header del Drawer con info del usuario */}
       <View className={`px-4 py-5`} style={{ paddingTop: insets.top + 20 }}>
-      <Image 
-  source={{ uri: 'https://placehold.co/150x150' }} 
-  className="w-16 h-16 rounded-full border-2 border-white mb-2" 
-  resizeMode="cover"
-/>
+        <Image 
+          source={{ uri: 'https://placehold.co/150x150' }} 
+          className="w-16 h-16 rounded-full border-2 border-white mb-2" 
+          resizeMode="cover"
+        />
         <View className="mt-2">
-          <Text className="text-black text-lg font-bold">María González</Text>
-          <Text className="text-black text-sm opacity-80">Analista de Recursos Humanos</Text>
+          <Text className="text-black dark:text-gray-100 text-lg font-bold">María González</Text>
+          <Text className="text-black dark:text-gray-100 text-sm opacity-80">Analista de Recursos Humanos</Text>
         </View>
       </View>
       
       {/* Separador */}
-      <View className="h-px bg-gray-200 my-2" />
+      <View className="h-px bg-gray-200 dark:bg-gray-700 my-2" />
 
       {/* Sección Principal */}
       <View className="mb-2">
-        <Text className="text-xs text-gray-500 font-medium uppercase ml-4 mt-2 mb-1">Principal</Text>
+        <Text className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase ml-4 mt-2 mb-1">Principal</Text>
         <DrawerItem
           label="Inicio"
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute === '/(drawer)' ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -63,7 +67,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('perfil') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -85,7 +89,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('asistencia') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -102,7 +106,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('nomina') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <FontAwesome5 
@@ -119,7 +123,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('vacaciones') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -136,7 +140,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('desempeno') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -158,7 +162,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('beneficios') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -175,7 +179,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('formacion') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -192,7 +196,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('noticias') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -214,7 +218,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           labelStyle={{ 
             fontSize: 15, 
             fontWeight: '500', 
-            color: currentRoute.includes('soporte') ? THEME_COLOR : '#424242'
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}
           icon={({ size, color }) => (
             <Ionicons 
@@ -230,7 +234,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       
       {/* Separador */}
       <View className="h-px bg-gray-200 my-2" />
-      
+
       {/* Cerrar Sesión */}
       <DrawerItem
         label="Cerrar Sesión"
@@ -244,7 +248,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
       />
       
       {/* Versión de la app */}
-      <Text className="text-xs text-gray-400 text-center mt-4 mb-2">Versión 1.0.0</Text>
+      <Text className="text-xs text-gray-400 dark:text-gray-500 text-center mt-4 mb-2">Versión 1.0.0</Text>
     </DrawerContentScrollView>
   );
 };
@@ -270,102 +274,7 @@ const DrawerLayout = () => (
       },
     }}
   >
-    <Drawer.Screen
-      name="index"
-      options={{
-        headerTitle: 'Inicio',
-        drawerLabel: 'Inicio',
-        drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="(perfil)"
-      options={{
-        headerTitle: 'Mi Perfil',
-        drawerLabel: 'Mi Perfil',
-        drawerIcon: ({ size, color }) => (
-          <Ionicons name="person-outline" size={size} color={color} />
-        ),
-        headerRight: () => (
-          <Link href="/modal" asChild>
-            <HeaderButton />
-          </Link>
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="asistencia"
-      options={{
-        headerTitle: 'Asistencia',
-        drawerLabel: 'Asistencia',
-        drawerIcon: ({ size, color }) => <Ionicons name="time-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="nomina"
-      options={{
-        headerTitle: 'Nómina',
-        drawerLabel: 'Nómina',
-        drawerIcon: ({ size, color }) => <FontAwesome5 name="money-check-alt" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="vacaciones"
-      options={{
-        headerTitle: 'Vacaciones y Ausencias',
-        drawerLabel: 'Vacaciones y Ausencias',
-        drawerIcon: ({ size, color }) => <Ionicons name="umbrella-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="desempeño"
-      options={{
-        headerTitle: 'Desempeño',
-        drawerLabel: 'Desempeño',
-        drawerIcon: ({ size, color }) => <Ionicons name="trending-up-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="beneficios"
-      options={{
-        headerTitle: 'Beneficios',
-        drawerLabel: 'Beneficios',
-        drawerIcon: ({ size, color }) => <Ionicons name="gift-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="formacion"
-      options={{
-        headerTitle: 'Formación',
-        drawerLabel: 'Formación',
-        drawerIcon: ({ size, color }) => <Ionicons name="school-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="noticias"
-      options={{
-        headerTitle: 'Noticias',
-        drawerLabel: 'Noticias',
-        drawerIcon: ({ size, color }) => <Ionicons name="newspaper-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="soporte"
-      options={{
-        headerTitle: 'Soporte',
-        drawerLabel: 'Soporte',
-        drawerIcon: ({ size, color }) => <Ionicons name="help-buoy-outline" size={size} color={color} />,
-      }}
-    />
-    <Drawer.Screen
-      name="salir"
-      options={{
-        headerTitle: 'Cerrar Sesión',
-        drawerLabel: 'Cerrar Sesión',
-        drawerLabelStyle: { color: '#d32f2f', fontWeight: 'bold' },
-        drawerIcon: ({ size }) => <Ionicons name="log-out-outline" size={size} color="#d32f2f" />,
-      }}
-    />
+    {/* Drawer Screens... */}
   </Drawer>
 );
 
